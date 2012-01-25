@@ -18,7 +18,7 @@ import qualified Graphics.Rendering.Cairo as C
 import qualified Graphics.Rendering.Cairo.Matrix as M
 import System.Locale (defaultTimeLocale)
 
-import Paths_scope as My
+import Paths_scope_cairo as My
 import Scope.Layer
 import Scope.Types
 import Scope.View
