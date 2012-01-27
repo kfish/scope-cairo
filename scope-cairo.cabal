@@ -5,9 +5,14 @@ Version:             0.7.0.0
 Synopsis:            An interactive renderer for plotting time-series data
 
 Description:
-    scope-cairo is a Cairo rendering backend for scope.
-    scope is a framework for plotting time-series data, using zoom-cache
-    files.
+    scope-cairo is a Cairo rendering backend for scope, which is a
+    a framework for plotting time-series data using zoom-cache files.
+    .
+    For more information on scope and zoom-cache, see their packages:
+    .
+    <http://hackage.haskell.org/package/scope>
+    .
+    <http://hackage.haskell.org/package/zoom-cache>
     .
     This package includes a Gtk/Cairo application. It's a desktop
     application with a /File/ menu; remember those? wow! This will probably
