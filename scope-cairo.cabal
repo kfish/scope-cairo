@@ -80,7 +80,10 @@ Library
 
   Exposed-modules:
     Scope.Cairo
+    Scope.Cairo.Events
+    Scope.Cairo.IORef
     Scope.Cairo.Plot
+    Scope.Cairo.Types
 
 Executable scope-cairo
   if flag(splitBase)
