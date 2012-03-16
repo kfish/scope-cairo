@@ -1,16 +1,16 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
-module GUI (
-    guiMain
+module Main (
+    main
 ) where
 
 import Control.Applicative ((<$>))
-import Control.Concurrent
 import Control.Monad.Reader
 import Data.IORef
 import Data.Maybe
 import qualified Graphics.UI.Gtk as G
+import System.Environment (getArgs)
 
 import Paths_scope_cairo as My
 import Scope.Layer
@@ -24,10 +24,11 @@ windowWidth, windowHeight :: Int
 windowWidth   = 500
 windowHeight  = 500
 
--- Display image in window
-guiMain :: Chan String -> [String] -> IO ()
-guiMain chan args = do
+main :: IO ()
+main = do
   _ <- G.initGUI
+
+  args <- getArgs
 
   window <- G.windowNew
   G.widgetSetSizeRequest window windowWidth windowHeight
@@ -105,7 +106,7 @@ guiMain chan args = do
   scopeRef <- scopeCairoNew
   ViewCairo{..} <- viewUI . view <$> readIORef scopeRef
 
-  quita `G.on` G.actionActivated $ myQuit scopeRef window chan
+  quita `G.on` G.actionActivated $ myQuit scopeRef window
 
   mapM_ (modifyIORefM scopeRef . addLayersFromFile) args
   openDialog `G.on` G.response $ myFileOpen scopeRef openDialog
@@ -117,20 +118,16 @@ guiMain chan args = do
   statusbar <- G.statusbarNew
   G.boxPackStart vbox statusbar G.PackNatural 0
 
-  G.onDestroy window ((myWriteChan chan "quit") >> G.mainQuit)
+  G.onDestroy window G.mainQuit
 
   G.widgetShowAll window
   G.mainGUI
 
-myQuit :: G.WidgetClass cls => IORef (Scope ViewCairo) -> cls -> Chan String -> IO ()
-myQuit scopeRef window chan = do
+myQuit :: G.WidgetClass cls => IORef (Scope ViewCairo) -> cls -> IO ()
+myQuit scopeRef window = do
   scopeModifyMUpdate scopeRef scopeClose
   G.widgetDestroy window
-  myWriteChan chan "quit"
 
-myWriteChan :: Chan String -> String -> IO ()
-myWriteChan chan s = do writeChan chan s
-                        yield
 myNew :: IO ()
 myNew = putStrLn "New"
 

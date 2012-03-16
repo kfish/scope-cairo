@@ -94,9 +94,7 @@ Executable scope-cairo
     build-depends:
       base < 3
 
-  Main-Is:             main.hs
-  Other-Modules:       Children
-                       GUI
+  Main-Is:             GUI.hs
   Hs-Source-Dirs:      ., src
   Build-Depends:
     cairo,
