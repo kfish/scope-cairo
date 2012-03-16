@@ -8,7 +8,6 @@ module Scope.Cairo (
 
     -- * Scope ViewCairo
     , scopeCairoNew
-    , viewCairoInit
 
     , scopeModifyMUpdate
     , scopeModifyUpdate
@@ -42,7 +41,7 @@ data ViewCairo = ViewCairo
 
 scopeCairoNew :: G.DrawingArea -> G.Adjustment -> IO (IORef (Scope ViewCairo))
 scopeCairoNew drawingArea adj = do
-    scopeRef <- newIORef $ scopeNew (viewCairoInit drawingArea adj)
+    scopeRef <- newIORef $ scopeNew (ViewCairo drawingArea adj)
 
     adj `G.onValueChanged` (scroll scopeRef)
 
@@ -62,9 +61,6 @@ scopeCairoNew drawingArea adj = do
     G.widgetSetCanFocus drawingArea True
 
     return scopeRef
-
-viewCairoInit :: G.DrawingArea -> G.Adjustment -> ViewCairo
-viewCairoInit c a = ViewCairo c a
 
 ----------------------------------------------------------------
 
