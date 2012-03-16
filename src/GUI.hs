@@ -17,7 +17,6 @@ import Scope.Layer
 import Scope.Types
 
 import Scope.Cairo
-import Scope.Cairo.Plot
 
 ----------------------------------------------------------------------
 
@@ -113,6 +112,7 @@ guiMain chan args = do
   saveDialog `G.on` G.response $ myFileSave scopeRef saveDialog
 
   G.boxPackStart vbox frame G.PackGrow 0
+  scopeCairoDefaultEvents scopeRef
 
   statusbar <- G.statusbarNew
   G.boxPackStart vbox statusbar G.PackNatural 0

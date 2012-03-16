@@ -3,16 +3,13 @@
 {-# OPTIONS -Wall #-}
 
 module Scope.Cairo (
-    -- * Types
-      ViewCairo(..)
-
     -- * Scope ViewCairo
-    , scopeCairoNew
+      scopeCairoNew
 
-    -- * Utils
-    , keepState
-
+    , module Scope.Cairo.Events
     , module Scope.Cairo.IORef
+    , module Scope.Cairo.Plot
+    , module Scope.Cairo.Types
 ) where
 
 import Control.Monad.Reader
@@ -23,7 +20,7 @@ import Scope.Types hiding (m, b)
 
 import Scope.Cairo.Events
 import Scope.Cairo.IORef
-import Scope.Cairo.Render
+import Scope.Cairo.Plot
 import Scope.Cairo.Types
 
 ----------------------------------------------------------------------
@@ -41,8 +38,6 @@ scopeCairoNew = do
     G.boxPackStart vbox scrollbar G.PackNatural 0
 
     scopeRef <- newIORef $ scopeNew (ViewCairo vbox drawingArea adj)
-
-    scopeCairoDefaultEvents scopeRef
 
     return scopeRef
 
