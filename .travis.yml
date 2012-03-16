@@ -1,6 +1,5 @@
 language: haskell
 
 install:
-    - cabal install gtk2hs-buildtools
-    - cabal install
-
+  - cabal install gtk2hs-buildtools
+  - cabal install
