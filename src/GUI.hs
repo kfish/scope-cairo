@@ -5,6 +5,7 @@ module GUI (
     guiMain
 ) where
 
+import Control.Applicative ((<$>))
 import Control.Concurrent
 import Control.Monad.Reader
 import Data.IORef
@@ -102,10 +103,8 @@ guiMain chan args = do
   menubar <- getWidget "/ui/menubar1"
   G.boxPackStart vbox menubar G.PackNatural 0
 
-  adj <- G.adjustmentNew (0.0) (0.0) (1.0) (0.1) 1.0 1.0
-  drawingArea <- G.drawingAreaNew
-
-  scopeRef <- scopeCairoNew drawingArea adj
+  scopeRef <- scopeCairoNew
+  ViewCairo{..} <- viewUI . view <$> readIORef scopeRef
 
   quita `G.on` G.actionActivated $ myQuit scopeRef window chan
 
@@ -113,14 +112,11 @@ guiMain chan args = do
   openDialog `G.on` G.response $ myFileOpen scopeRef openDialog
   saveDialog `G.on` G.response $ myFileSave scopeRef saveDialog
 
-  G.boxPackStart vbox drawingArea G.PackGrow 0
+  G.boxPackStart vbox frame G.PackGrow 0
 
-  drawingArea `G.on` G.exposeEvent $ G.tryEvent $ do
+  canvas `G.on` G.exposeEvent $ G.tryEvent $ do
     liftIO $ updateCanvas scopeRef
     return ()
-
-  scrollbar <- G.hScrollbarNew adj
-  G.boxPackStart vbox scrollbar G.PackNatural 0
 
   statusbar <- G.statusbarNew
   G.boxPackStart vbox statusbar G.PackNatural 0

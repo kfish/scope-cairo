@@ -35,13 +35,24 @@ import Scope.View
 ----------------------------------------------------------------------
 
 data ViewCairo = ViewCairo
-    { canvas :: G.DrawingArea
+    { frame  :: G.VBox
+    , canvas :: G.DrawingArea
     , adj    :: G.Adjustment
     }
 
-scopeCairoNew :: G.DrawingArea -> G.Adjustment -> IO (IORef (Scope ViewCairo))
-scopeCairoNew drawingArea adj = do
-    scopeRef <- newIORef $ scopeNew (ViewCairo drawingArea adj)
+scopeCairoNew :: IO (IORef (Scope ViewCairo))
+scopeCairoNew = do
+    vbox <- G.vBoxNew False 0
+
+    adj <- G.adjustmentNew (0.0) (0.0) (1.0) (0.1) 1.0 1.0
+
+    drawingArea <- G.drawingAreaNew
+    G.boxPackStart vbox drawingArea G.PackGrow 0
+
+    scrollbar <- G.hScrollbarNew adj
+    G.boxPackStart vbox scrollbar G.PackNatural 0
+
+    scopeRef <- newIORef $ scopeNew (ViewCairo vbox drawingArea adj)
 
     adj `G.onValueChanged` (scroll scopeRef)
 
