@@ -17,6 +17,7 @@ import Scope.Types hiding (m, b)
 import Scope.View
 
 import Scope.Cairo.IORef
+import Scope.Cairo.Plot
 import Scope.Cairo.Types
 
 ----------------------------------------------------------------
@@ -41,6 +42,12 @@ scopeCairoDefaultEvents scopeRef = do
         ]
 
     G.widgetSetCanFocus canvas True
+
+    canvas `G.on` G.exposeEvent $ G.tryEvent $ do
+      liftIO $ updateCanvas scopeRef
+      return ()
+
+    return ()
 
 ----------------------------------------------------------------
 

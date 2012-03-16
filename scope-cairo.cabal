@@ -83,6 +83,7 @@ Library
     Scope.Cairo.Events
     Scope.Cairo.IORef
     Scope.Cairo.Plot
+    Scope.Cairo.Render
     Scope.Cairo.Types
 
 Executable scope-cairo

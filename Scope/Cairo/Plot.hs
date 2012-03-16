@@ -23,7 +23,11 @@ import Scope.Layer
 import Scope.Types
 import Scope.View
 
-import Scope.Cairo
+import Scope.Cairo.IORef
+import Scope.Cairo.Render
+import Scope.Cairo.Types
+
+----------------------------------------------------------------
 
 updateCanvas :: IORef (Scope ViewCairo) -> IO Bool
 updateCanvas ref = do

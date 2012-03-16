@@ -114,10 +114,6 @@ guiMain chan args = do
 
   G.boxPackStart vbox frame G.PackGrow 0
 
-  canvas `G.on` G.exposeEvent $ G.tryEvent $ do
-    liftIO $ updateCanvas scopeRef
-    return ()
-
   statusbar <- G.statusbarNew
   G.boxPackStart vbox statusbar G.PackNatural 0
 
