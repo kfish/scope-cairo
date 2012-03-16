@@ -80,6 +80,7 @@ Library
 
   Exposed-modules:
     Scope.Cairo
+    Scope.Cairo.Plot
 
 Executable scope-cairo
   if flag(splitBase)
