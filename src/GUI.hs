@@ -112,8 +112,7 @@ guiMain chan args = do
   adj <- G.adjustmentNew (0.0) (0.0) (1.0) (0.1) 1.0 1.0
   drawingArea <- G.drawingAreaNew
 
-  let scope = scopeCairoNew drawingArea adj
-  scopeRef <- newIORef scope
+  scopeRef <- scopeCairoNew drawingArea adj
 
   quita `G.on` G.actionActivated $ myQuit scopeRef window chan
 

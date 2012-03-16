@@ -16,6 +16,7 @@ import Prelude hiding (catch)
 
 import Control.Monad.CatchIO
 import Control.Monad.Reader
+import Data.IORef
 import qualified Graphics.Rendering.Cairo as C
 import Graphics.Rendering.Cairo.Internal (Render(..))
 import Graphics.Rendering.Cairo.Types (Cairo)
@@ -30,8 +31,8 @@ data ViewCairo = ViewCairo
     , adj    :: G.Adjustment
     }
 
-scopeCairoNew :: G.DrawingArea -> G.Adjustment -> Scope ViewCairo
-scopeCairoNew c a = scopeNew (viewCairoInit c a)
+scopeCairoNew :: G.DrawingArea -> G.Adjustment -> IO (IORef (Scope ViewCairo))
+scopeCairoNew c a = newIORef $ scopeNew (viewCairoInit c a)
 
 viewCairoInit :: G.DrawingArea -> G.Adjustment -> ViewCairo
 viewCairoInit c a = ViewCairo c a
