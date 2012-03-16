@@ -40,7 +40,10 @@ data ViewCairo = ViewCairo
     }
 
 scopeCairoNew :: G.DrawingArea -> G.Adjustment -> IO (IORef (Scope ViewCairo))
-scopeCairoNew c a = newIORef $ scopeNew (viewCairoInit c a)
+scopeCairoNew c adj = do
+    scopeRef <- newIORef $ scopeNew (viewCairoInit c adj)
+    adj `G.onValueChanged` (scroll scopeRef)
+    return scopeRef
 
 viewCairoInit :: G.DrawingArea -> G.Adjustment -> ViewCairo
 viewCairoInit c a = ViewCairo c a
@@ -110,4 +113,11 @@ keepState render = do
   C.save
   _ <- render
   C.restore
+
+----------------------------------------------------------------
+
+scroll :: IORef (Scope ViewCairo) -> IO ()
+scroll ref = do
+    val <- G.adjustmentGetValue =<< adj . viewUI . view <$> readIORef ref
+    scopeModifyUpdate ref (viewMoveTo val)
 

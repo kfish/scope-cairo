@@ -120,8 +120,6 @@ guiMain chan args = do
   openDialog `G.on` G.response $ myFileOpen scopeRef openDialog
   saveDialog `G.on` G.response $ myFileSave scopeRef saveDialog
 
-  adj `G.onValueChanged` (scroll scopeRef)
-
   G.boxPackStart vbox drawingArea G.PackGrow 0
 
   drawingArea `G.on` G.buttonPressEvent $ G.tryEvent $ buttonDown scopeRef
@@ -259,11 +257,6 @@ wheel ref = do
             G.ScrollUp   -> scopeModifyUpdate ref (viewZoomInOn cX 1.2)
             G.ScrollDown -> scopeModifyUpdate ref (viewZoomOutOn cX 1.2)
             _            -> return ()
-
-scroll :: IORef (Scope ViewCairo) -> IO ()
-scroll ref = do
-    val <- G.adjustmentGetValue =<< adj . viewUI . view <$> readIORef ref
-    scopeModifyUpdate ref (viewMoveTo val)
 
 ----------------------------------------------------------------
 
