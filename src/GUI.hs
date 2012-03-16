@@ -216,28 +216,6 @@ writePng path ref = do
 
 ----------------------------------------------------------------
 
-scopeModifyMUpdate :: IORef (Scope ViewCairo)
-                   -> (Scope ViewCairo -> IO (Scope ViewCairo))
-                   -> IO ()
-scopeModifyMUpdate ref f = do
-    modifyIORefM ref f
-    viewCairoUpdate =<< view <$> readIORef ref
-
-scopeModifyUpdate :: IORef (Scope ViewCairo)
-                  -> (View ViewCairo -> View ViewCairo)
-                  -> IO ()
-scopeModifyUpdate ref f = do
-    modifyIORef ref (scopeModifyView f)
-    viewCairoUpdate =<< view <$> readIORef ref
-
-viewCairoUpdate :: View ViewCairo -> IO ()
-viewCairoUpdate View{..} = do
-    G.adjustmentSetValue (adj viewUI) (toDouble viewX1)
-    G.adjustmentSetPageSize (adj viewUI) $ toDouble (distance viewX1 viewX2)
-    G.widgetQueueDraw (canvas viewUI)
-
-----------------------------------------------------------------
-
 _canvasToScreen :: G.DrawingArea -> CanvasX -> IO ScreenX
 _canvasToScreen c (CanvasX cX) = do
     (width, _height) <- G.widgetGetSize c
@@ -459,11 +437,4 @@ plotArrow (CanvasX cX) = do
     C.lineTo cX (0.98)
     C.fill
 
-----------------------------------------------------------------------
-
-modifyIORefM :: MonadIO m => IORef a -> (a -> m a) -> m ()
-modifyIORefM ref f = do
-    x <- liftIO $ readIORef ref
-    x' <- f x
-    liftIO $ writeIORef ref x'
 
