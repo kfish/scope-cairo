@@ -17,6 +17,7 @@ import Scope.Layer
 import Scope.Types
 
 import Scope.Cairo
+import Scope.Numeric.IEEE754
 
 ----------------------------------------------------------------------
 
@@ -108,7 +109,7 @@ main = do
 
   quita `G.on` G.actionActivated $ myQuit scopeRef window
 
-  mapM_ (modifyIORefM scopeRef . addLayersFromFile) args
+  mapM_ (modifyIORefM scopeRef . addLayersFromFile scopeReadDouble) args
   openDialog `G.on` G.response $ myFileOpen scopeRef openDialog
   saveDialog `G.on` G.response $ myFileSave scopeRef saveDialog
 
@@ -136,7 +137,7 @@ myFileOpen scopeRef fcdialog response = do
   case response of
     G.ResponseAccept -> do
         Just filename <- G.fileChooserGetFilename fcdialog
-        scopeModifyMUpdate scopeRef (addLayersFromFile filename)
+        scopeModifyMUpdate scopeRef (addLayersFromFile scopeReadDouble filename)
     _ -> return ()
   G.widgetHide fcdialog
 
