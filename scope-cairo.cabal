@@ -71,7 +71,7 @@ Library
   Build-Depends:
     cairo,
     gtk,
-    MonadCatchIO-transformers >  0.2     && < 0.3,
+    MonadCatchIO-transformers >  0.2     && < 0.4,
     mtl                       >= 2.0.0.0 && < 3,
     old-locale,
     scope                     >= 0.8.0.0 && < 0.9,
@@ -99,7 +99,7 @@ Executable scope-cairo
   Build-Depends:
     cairo,
     gtk,
-    MonadCatchIO-transformers >  0.2     && < 0.3,
+    MonadCatchIO-transformers >  0.2     && < 0.4,
     mtl                       >= 2.0.0.0 && < 3,
     old-locale,
     scope                     >= 0.8.0.0 && < 0.9,
